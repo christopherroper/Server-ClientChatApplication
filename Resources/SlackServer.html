@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+  <title> Roper Tweet </title>
+    <link rel="stylesheet" href="SlackServer.css">
+  </head>
+<body>
+
+  <h1> Welcome to Twitter </h1>
+  <div id = 'login'>
+  <p> Please log in
+  <form>
+    Username:
+    <input type = "text" id="username">
+    <br>
+    Room:
+    <input type = "text" id="room">
+    <!-- <input type = "submit" style="display:none"> -->
+    <br>
+  </form>
+  <br>
+  <!-- <input type = "submit" id = "joinbutton" name = 'submit' value = 'join room' accessKey = 'enter'/> -->
+  <button type = "button" id="loginButton"> Join
+  </button>
+  <br>
+  <p id='fail'>
+</div>
+
+  <div id = 'chatRoom'>
+    <p id = 'roomSelected'> Chat Room:
+    </p>
+
+    <p id = 'messages'> Message History:
+    </p>
+  <p> Please send your message
+          <br>
+          <form  action="fakewebpage.html" onsubmit = "sendButton(event);">
+    <input type = "text" id="message">
+    <input type = "submit" style="display:none">
+  </form>
+</div>
+
+  <script type = "text/javascript" src="SlackServer.js">
+  </script>
+
+</body>
+</html>

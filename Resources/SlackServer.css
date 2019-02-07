@@ -1,0 +1,27 @@
+body {
+  background-color: blue;
+}
+h1 {
+  background-color: red;
+}
+p {
+  background-color: green;
+}
+
+div { position: absolute;
+    top: 100 autopx;
+    left: 50px;
+    width: 500px;
+    height: 100px;
+  }
+form {
+
+  position: relative;
+  bottom: 100 autopx;
+}
+/*li {
+  background-color: yellow;
+  position: absolute;
+  top: 100 autopx;
+  right: 500px;
+}*/
