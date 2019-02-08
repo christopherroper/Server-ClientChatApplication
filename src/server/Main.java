@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Main {
-public Server f;
+	
 	public static void main(String[] args) throws Exception {
-		Server f = new Server();
+		Server chatServer = new Server();
 		try {
-			f.Serve();
+			chatServer.Serve();
 		} catch (BadRequestException e) {
 			e.printStackTrace();
 			System.out.println("Error: Bad Request");

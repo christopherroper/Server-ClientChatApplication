@@ -20,38 +20,35 @@ import java.util.Iterator;
 
 public class Server {
 	//map from string to room
-	SocketChannel socketChannel;
-	OutputStream os;
-	InputStream input;
-	ServerSocket serverSocket;
-	ServerSocketChannel serverSocketChannel;
-	Scanner s;
-	String [] word;
-	public Selector select;
-	int threadCount;
+	SocketChannel clientSC;
+//	OutputStream os;
+//	InputStream input;
+//	ServerSocket serverSocket;
+	ServerSocketChannel serverSC;
+//	String [] word;
+	public Selector channelSelector;
 	HashMap<String, Room> roomList = new HashMap<String, Room>();
 	
 	public Server() throws BadRequestException, IOException {
-		serverSocketChannel = null;
-		serverSocketChannel = ServerSocketChannel.open().bind(new InetSocketAddress(8080));
-		select = Selector.open();
-		serverSocketChannel.configureBlocking(false);
-		serverSocketChannel.register(select, SelectionKey.OP_ACCEPT);
+		serverSC = ServerSocketChannel.open().bind(new InetSocketAddress(8080));
+		channelSelector = Selector.open();
+		serverSC.configureBlocking(false);
+		serverSC.register(channelSelector, SelectionKey.OP_ACCEPT);
 	}
 	
 	public void Serve () throws BadRequestException, IOException {
 		while (true) {
-		select.select();
-		Set<SelectionKey> keys = select.selectedKeys();
-		Iterator<SelectionKey> it = keys.iterator();
-			while(it.hasNext()) {
-				SelectionKey key = it.next();
+			channelSelector.select();
+			Set<SelectionKey> uniqueSelectionKeys = channelSelector.selectedKeys();
+			Iterator<SelectionKey> keyIterator = uniqueSelectionKeys.iterator();
+			while(keyIterator.hasNext()) {
+				SelectionKey key = keyIterator.next();
 				if(key.isAcceptable()) {
-					it.remove();
-				socketChannel = serverSocketChannel.accept();
-				ThreadRunnable t = new ThreadRunnable(socketChannel,this);
-				Thread thread = new Thread(t);
-				thread.start();
+					keyIterator.remove();
+					clientSC = serverSC.accept();
+					ThreadRunnable newThreadRunnable = new ThreadRunnable(clientSC, this);
+					Thread thread = new Thread(newThreadRunnable);
+					thread.start();
 					}
 				}
 			}
@@ -59,13 +56,13 @@ public class Server {
 	
 	public Room getRoom(String roomName) {
 		Room newRoom;
-		if (roomList.containsKey(roomName)) {
+		if(roomList.containsKey(roomName)) {
 			newRoom = roomList.get(roomName);
 		}
-		else {newRoom = new Room();
-		roomList.put(roomName, newRoom);
+		else {
+			newRoom = new Room();
+			roomList.put(roomName, newRoom);
 		}
 		return newRoom;
 	}
 }
-//add sendMessageO)
